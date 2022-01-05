@@ -1957,7 +1957,16 @@ __webpack_require__.r(__webpack_exports__);
           'password': this.password
         })
       };
-      fetch(url, configuracao);
+      fetch(url, configuracao).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data.token) {
+          document.cookie = 'token=' + data.token + ';SameSite=Lax';
+        } //continuar envio form de autenticação por sessão
+
+
+        e.target.submit();
+      });
     }
   }
 });
