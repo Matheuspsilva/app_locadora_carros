@@ -1969,7 +1969,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['csrf_token'],
   data: function data() {
@@ -37801,13 +37800,7 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [
             _vm._v("Login (Componente Vue)")
           ]),
-          _vm._v(
-            "\n                " +
-              _vm._s(_vm.email) +
-              " - " +
-              _vm._s(_vm.password) +
-              "\n                "
-          ),
+          _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c(
               "form",
