@@ -43,6 +43,12 @@
 
         <!-- Modal -->
         <modal-component id-modal="modalMarca" titulo="Adicionar Marca">
+            <template v-slot:alertas>
+                <alert-component tipo="success" :detalhes="transacaoDetalhes" titulo="Cadastro realizado com sucesso" v-if="transacaoStatus == 'adicionado'"></alert-component>
+                <alert-component tipo="danger" :detalhes="transacaoDetalhes" titulo="Erro ao tentar cadastrar a marca" v-if="transacaoStatus == 'erro'" ></alert-component>
+
+            </template>
+
             <template v-slot:conteudo>
                 <div class="form-group">
                     <input-container-component titulo="Nome da marca" id="novoNome" id-help ="novoNomeHelp" texto-ajuda="Informe o nome da marca">
@@ -71,23 +77,15 @@
 
 <script>
     export default{
-        computed:{
-            token(){
-                let token = document.cookie.split(';').find(indice =>{
-                    return indice.includes('token=')
-                })
-
-                token = token.split('=')[1]
-                token = 'Bearer ' + token
-
-                return token
-            }
-        },
         data(){
             return {
                 urlBase: 'http://localhost:8000/api/v1/marca',
                 nomeMarca: '',
-                arquivoImagem: []
+                arquivoImagem: [],
+                transacaoStatus: '',
+                transacaoDetalhes: {
+
+                }
             }
         },
         methods:{
@@ -111,13 +109,35 @@
 
                 axios.post(this.urlBase, formData, config)
                     .then(response => {
+                        this.transacaoStatus = 'adicionado'
+                        this.transacaoDetalhes = {
+                            mensagem:  'Id do registro: ' + response.data.id
+                        }
                         console.log(response)
                     })
                     .catch(errors => {
-                        console.log(errors)
+                        this.transacaoStatus = 'erro'
+                        this.transacaoDetalhes = {
+                            mensagem: errors.response.data.message,
+                            dados: errors.response.data.errors
+                        }
+                        //erros.response.data.message
                     })
             }
+        },
+        computed:{
+            token(){
+                let token = document.cookie.split(';').find(indice =>{
+                    return indice.includes('token=')
+                })
+
+                token = token.split('=')[1]
+                token = 'Bearer ' + token
+
+                return token
+            }
         }
+
 
     }
 </script>
